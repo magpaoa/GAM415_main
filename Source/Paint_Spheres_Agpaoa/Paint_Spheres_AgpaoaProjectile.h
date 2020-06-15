@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Kismet/GameplayStatics.h"
 #include "Paint_Spheres_AgpaoaProjectile.generated.h"
 
 UCLASS(config=Game)
@@ -30,5 +31,11 @@ public:
 	FORCEINLINE class USphereComponent* GetCollisionComp() const { return CollisionComp; }
 	/** Returns ProjectileMovement subobject **/
 	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-};
 
+	APaint_Spheres_AgpaoaProjectile(int);
+
+	FVector size;
+
+	UMaterialInterface* paintmat;
+
+};

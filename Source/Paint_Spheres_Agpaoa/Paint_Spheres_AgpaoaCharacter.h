@@ -138,5 +138,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	//we will use this to determine the color of what we're shooting and what color it paints, limit is 
+	int color = 0;
+	int limit = 3;
 };
-
