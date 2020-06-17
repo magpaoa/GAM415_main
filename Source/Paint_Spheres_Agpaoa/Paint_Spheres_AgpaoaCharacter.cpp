@@ -10,6 +10,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
+#include "GameFramework/Actor.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -19,7 +20,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 APaint_Spheres_AgpaoaCharacter::APaint_Spheres_AgpaoaCharacter()
 {
-\
 
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -84,6 +84,18 @@ APaint_Spheres_AgpaoaCharacter::APaint_Spheres_AgpaoaCharacter()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+	static ConstructorHelpers::FObjectFinder<UMaterial> redmat(TEXT("Material'/Game/Shader/Red.Red'"));
+	red = redmat.Object;
+	static ConstructorHelpers::FObjectFinder<UMaterial> bluemat(TEXT("Material'/Game/Shader/Blue.Blue'"));
+	blue = bluemat.Object;
+	static ConstructorHelpers::FObjectFinder<UMaterial> greenmat(TEXT("Material'/Game/Shader/Green.Green'"));
+	green = greenmat.Object;
+	static ConstructorHelpers::FObjectFinder<UMaterial> blackmat(TEXT("Material'/Game/Shader/black.black'"));
+	black = blackmat.Object;
+
+	paintmat = red;
+	this->SetActorTickEnabled(true);
 }
 
 void APaint_Spheres_AgpaoaCharacter::BeginPlay()
@@ -121,6 +133,9 @@ void APaint_Spheres_AgpaoaCharacter::SetupPlayerInputComponent(class UInputCompo
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APaint_Spheres_AgpaoaCharacter::OnFire);
+
+	//
+	PlayerInputComponent->BindAction("Change", IE_Pressed, this, &APaint_Spheres_AgpaoaCharacter::changecolor);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -165,7 +180,15 @@ void APaint_Spheres_AgpaoaCharacter::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				World->SpawnActor<APaint_Spheres_AgpaoaProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				//World->SpawnActor<APaint_Spheres_AgpaoaProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+				//spawning with parameters is dumb so we do it like this
+				APaint_Spheres_AgpaoaProjectile* shot;
+				shot = World->SpawnActor <APaint_Spheres_AgpaoaProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				if (shot) 
+				{
+					shot->paintmat = paintmat;
+				}
 			}
 		}
 	}
@@ -299,4 +322,39 @@ bool APaint_Spheres_AgpaoaCharacter::EnableTouchscreenMovement(class UInputCompo
 	}
 	
 	return false;
+}
+
+//we call this to change throught the colors we can use
+void APaint_Spheres_AgpaoaCharacter::changecolor()
+{
+
+	color++;
+	if (color >= limit)
+	{
+		color = 0;
+	}
+
+
+	switch (color)
+	{
+	case 0:
+		paintmat = red;
+		break;
+	case 1:
+		paintmat = blue;
+		break;
+	case 2:
+		paintmat = green;
+		break;
+	default:
+		paintmat = black;
+	}
+
+	return;
+}
+
+void APaint_Spheres_AgpaoaCharacter::Tick()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
+	return;
 }

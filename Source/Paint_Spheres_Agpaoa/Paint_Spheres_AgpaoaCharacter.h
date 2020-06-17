@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/DecalActor.h"
 #include "Paint_Spheres_AgpaoaCharacter.generated.h"
 
 class UInputComponent;
@@ -117,6 +119,8 @@ protected:
 	void BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location);
 	void EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location);
 	void TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location);
+	void changecolor();
+	void Tick();
 	TouchData	TouchItem;
 	
 protected:
@@ -141,4 +145,16 @@ public:
 	//we will use this to determine the color of what we're shooting and what color it paints, limit is 
 	int color = 0;
 	int limit = 3;
+
+	//after failing to do stuff, I have decided this is the place for this
+	UPROPERTY()
+	UMaterialInterface* paintmat;
+	UPROPERTY()
+	UMaterialInterface* red;
+	UPROPERTY()
+	UMaterialInterface* blue;
+	UPROPERTY()
+	UMaterialInterface* green;
+	UPROPERTY()
+	UMaterialInterface* black;
 };
