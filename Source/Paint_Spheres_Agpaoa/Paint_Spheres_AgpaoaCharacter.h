@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DecalActor.h"
+#include "DrawDebugHelpers.h"
 #include "Paint_Spheres_AgpaoaCharacter.generated.h"
 
 class UInputComponent;
@@ -120,7 +121,7 @@ protected:
 	void EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location);
 	void TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location);
 	void changecolor();
-	void Tick();
+
 	TouchData	TouchItem;
 	
 protected:
@@ -146,6 +147,9 @@ public:
 	int color = 0;
 	int limit = 3;
 
+	//called everyframe?
+	virtual void Tick(float);
+	
 	//after failing to do stuff, I have decided this is the place for this
 	UPROPERTY()
 	UMaterialInterface* paintmat;
@@ -157,4 +161,6 @@ public:
 	UMaterialInterface* green;
 	UPROPERTY()
 	UMaterialInterface* black;
+
+	FHitResult underhit;
 };
