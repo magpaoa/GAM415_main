@@ -298,3 +298,55 @@ bool APaint_Spheres_AgpaoaCharacter::EnableTouchscreenMovement(class UInputCompo
 	
 	return false;
 }
+<<<<<<< Updated upstream
+=======
+
+//we call this to change throught the colors we can use
+void APaint_Spheres_AgpaoaCharacter::changecolor()
+{
+
+	color++;
+	if (color >= limit)
+	{
+		color = 0;
+	}
+
+
+	switch (color)
+	{
+	case 0:
+		paintmat = red;
+		break;
+	case 1:
+		paintmat = blue;
+		break;
+	case 2:
+		paintmat = green;
+		break;
+	default:
+		paintmat = black;
+	}
+
+	return;
+}
+
+void APaint_Spheres_AgpaoaCharacter::Tick(float deltatime)
+{
+	FCollisionQueryParams CollisionParams;
+
+	DrawDebugLine(GetWorld(), FirstPersonCameraComponent->GetComponentLocation(), ((this->GetActorUpVector() * -1) * 1000.0f) + FirstPersonCameraComponent->GetComponentLocation(), FColor::Green, false, 1, 0, 1);
+
+	if (GetWorld()->LineTraceSingleByChannel(underhit, FirstPersonCameraComponent->GetComponentLocation(), ((this->GetActorUpVector() * -1) * 1000.0f) + FirstPersonCameraComponent->GetComponentLocation(), ECC_Visibility, CollisionParams))
+	{
+		if (underhit.bBlockingHit)
+		{
+			if (GEngine) {
+				//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("You are hitting: %s"), *underhit.GetActor()->GetName()));
+				
+			}
+		}
+	}
+
+	return;
+}
+>>>>>>> Stashed changes

@@ -163,3 +163,9 @@ void ACubeActor::CreateBoxMesh(FVector BoxRadius, TArray < FVector >& Vertices, 
     UVs[2] = UVs[6] = UVs[10] = UVs[14] = UVs[18] = UVs[22] = FVector2D(1.f, 1.f);
     UVs[3] = UVs[7] = UVs[11] = UVs[15] = UVs[19] = UVs[23] = FVector2D(1.f, 0.f);
 }
+
+void ACubeActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "hit");
+    this->Destroy();
+}
